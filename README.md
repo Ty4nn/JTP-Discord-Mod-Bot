@@ -2,6 +2,15 @@
 JTP-Discord-Mod-Bot
 
 
+#Get token
+[https://discord.com/developers/docs/intro](https://discord.com/developers/applications)
+new application
+bot tab > reset token (copy save token for set)
+turn on Server Members Intent
+turn on Message Content Intent
+
+
+
 #setup
 
 python -m venv .venv
