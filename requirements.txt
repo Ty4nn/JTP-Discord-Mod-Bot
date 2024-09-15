@@ -1,0 +1,9 @@
+discord.py
+gradio
+pillow
+safetensors
+timm
+torch
+torchvision
+python-dotenv
+huggingface_hub
