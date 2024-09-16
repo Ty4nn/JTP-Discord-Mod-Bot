@@ -465,7 +465,7 @@ async def on_message(message: discord.Message):
 
                             if "feral" not in str(message.channel):
                                 for feral in feral_block_list:
-                                    if score == feral_block_list:
+                                    if score == feral:
                                         print("matched")
                                         #if tag's score is greater then the specified score for tag in block list 
                                         if scores[score] >= feral_block_list[feral]:
@@ -480,7 +480,7 @@ async def on_message(message: discord.Message):
 
 
     if issue > 0:
-        print("][ * * * BLOCK_LIST  * * * ][")
+        print("][ * * * BLOCK_LIST(s)  * * * ][")
         await bot.get_channel(int(botPostChannel)).send(f"{message.author.mention} posted {message.jump_url}, image(s) {issues}")
         #await message.reply(f"<@{message.author.id}> your message was deleted; because AI thinks there was a chance that one, or more images in the post contained something against the rules. {issues}")
         #await message.delete()
