@@ -31,6 +31,17 @@ dotenv set BOTPOSTCHANNEL YOUR_CHANNEL_NUMBER_HERE
 
 dotenv set TAG_BLOCK_LIST {'tag1':.02,'tag2':.3}
 
+dotenv set SFW_BLOCK_LIST {'tag1':.02,'tag2':.3}
+
+dotenv set NSWF_BLOCK_LIST {'tag1':.02,'tag2':.3}
+
+dotenv set FEMALE_BLOCK_LIST {'tag1':.02,'tag2':.3}
+
+dotenv set MALE_BLOCK_LIST {'tag1':.02,'tag2':.3}
+
+dotenv set STRAIGHT_BLOCK_LIST {'tag1':.02,'tag2':.3}
+
+dotenv set FERAL_BLOCK_LIST {'tag1':.02,'tag2':.3}
 
 
 
