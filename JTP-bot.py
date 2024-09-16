@@ -1,5 +1,6 @@
 # Requires the 'members' and 'message_content' privileged intents to function.
-# Requires posting, and deleting for moderation.
+# Requires posting to send messages
+# If you enable deleting, then it requires that permtion as well.
 
 #discord bot
 import discord
@@ -51,14 +52,62 @@ print(botPostChannel)
 #example list
 #IE pony:.2 would be respond to images that give a autotagger score that includes pony 20% or higher.
 #tag_block_list = {'pony':.02,'equid':.3}
-tag_block_list = ast.literal_eval(os.environ["TAG_BLOCK_LIST"])
 
+#tags to block in all channels
+tag_block_list = ast.literal_eval(os.environ["TAG_BLOCK_LIST"])
 
 print("TAG_BLOCK_LIST is:")
 for block in tag_block_list:
     print(f'Tag to block {block}: {tag_block_list[block]}')
 
 
+#tags to only block in SFW channels
+sfw_block_list = ast.literal_eval(os.environ["SFW_BLOCK_LIST"])
+
+print("sfw_block_list is:")
+for sfw in sfw_block_list:
+    print(f'Tag to block {sfw}: {sfw_block_list[sfw]}')
+
+
+#tags to only block in SFW channels
+nsfw_block_list = ast.literal_eval(os.environ["NSWF_BLOCK_LIST"])
+
+print("nsfw_block_list is:")
+for nsfw in nsfw_block_list:
+    print(f'Tag to block {nsfw}: {nsfw_block_list[nsfw]}')
+
+
+#tags to only block in female channels
+female_block_list = ast.literal_eval(os.environ["FEMALE_BLOCK_LIST"])
+
+print("female_block_list is:")
+for female in female_block_list:
+    print(f'Tag to block {female}: {female_block_list[female]}')
+
+#tags to only block in male channels
+male_block_list = ast.literal_eval(os.environ["MALE_BLOCK_LIST"])
+
+print("male_block_list is:")
+for male in male_block_list:
+    print(f'Tag to block {male}: {male_block_list[male]}')
+
+#tags to only block in straight channels
+straight_block_list = ast.literal_eval(os.environ["STRAIGHT_BLOCK_LIST"])
+
+print("straight_block_list is:")
+for straight in straight_block_list:
+    print(f'Tag to block {straight}: {straight_block_list[straight]}')
+
+#tags to only block in straight channels
+feral_block_list = ast.literal_eval(os.environ["FERAL_BLOCK_LIST"])
+
+print("feral_block_list is:")
+for feral in feral_block_list:
+    print(f'Tag to block {feral}: {feral_block_list[feral]}')
+
+
+
+#details
 description = '''A discord bot, to run posted images through autotagger for moderation. 
 
 I am not affiliated with autotagger model in anyway.
@@ -84,7 +133,7 @@ if ( os.path.isfile(".\\tagger_tags.json") == False ):
     #print(
     hf_hub_download(repo_id="cdnuts/JointTaggerProject-Inference-Beta-GPU", filename="tagger_tags.json", repo_type="space", local_dir=".\\")
 else:
-    print("tagger_tags.json")
+    print("tagger_tags.json found")
 
 
 #https://huggingface.co/spaces/cdnuts/JointTaggerProject-Inference-Beta-GPU/resolve/main/tagger_tags.json?download=true
@@ -361,7 +410,69 @@ async def on_message(message: discord.Message):
                                     if scores[score] >= tag_block_list[block]:
                                         print("[ * * * TAG_BLOCK_LIST * * * ]")
                                         issue += 1
-                                        issues += str(round((scores[score]*100))) + "% **" + score + "**  "
+                                        issues += "tags-> " + str(round((scores[score]*100))) + "% **" + score + "**  "
+
+                            if "sfw" in str(message.channel) and "nsfw" not in str(message.channel):
+                                #if ( message.channel.lower.find("sfw") ):
+                                #if "sfw" in str(message.channel):
+                                #if ( str(message.channel).find("sfw") != -1 ):
+                                for sfw in sfw_block_list:
+                                    if score == sfw:
+                                        #if tag's score is greater then the specified score for tag in block list 
+                                        if scores[score] >= sfw_block_list[sfw]:
+                                            print("[ * * * SFW_BLOCK_LIST * * * ]")
+                                            issue += 1
+                                            issues += "SFW " + str(round((scores[score]*100))) + "% **" + score + "**  "
+                            else:
+                                for nsfw in nsfw_block_list:
+                                    if score == nsfw:
+                                        print("matched")
+                                        #if tag's score is greater then the specified score for tag in block list 
+                                        if scores[score] >= nsfw_block_list[nsfw]:
+                                            print("[ * * * NSFW_BLOCK_LIST * * * ]")
+                                            issue += 1
+                                            issues += "NSFW-> " + str(round((scores[score]*100))) + "% **" + score + "**  "
+
+                            if "female" in str(message.channel):
+                                for female in female_block_list:
+                                    if score == female:
+                                        print("matched")
+                                        #if tag's score is greater then the specified score for tag in block list 
+                                        if scores[score] >= female_block_list[female]:
+                                            print("[ * * * FEMALE_BLOCK_LIST * * * ]")
+                                            issue += 1
+                                            issues += "FEMALE-> " + str(round((scores[score]*100))) + "% **" + score + "**  "
+
+                            if "male" in str(message.channel):
+                                for male in male_block_list:
+                                    if score == male:
+                                        print("matched")
+                                        #if tag's score is greater then the specified score for tag in block list 
+                                        if scores[score] >= male_block_list[male]:
+                                            print("[ * * * MALE_BLOCK_LIST * * * ]")
+                                            issue += 1
+                                            issues += "MALE-> " + str(round((scores[score]*100))) + "% **" + score + "**  "
+
+                            if "straight" in str(message.channel):
+                                for straight in straight_block_list:
+                                    if score == straight_block_list:
+                                        print("matched")
+                                        #if tag's score is greater then the specified score for tag in block list 
+                                        if scores[score] >= straight_block_list[straight]:
+                                            print("[ * * * STRAIGHT_BLOCK_LIST * * * ]")
+                                            issue += 1
+                                            issues += "STRAIGHT-> " + str(round((scores[score]*100))) + "% **" + score + "**  "
+
+                            if "feral" not in str(message.channel):
+                                for feral in feral_block_list:
+                                    if score == feral_block_list:
+                                        print("matched")
+                                        #if tag's score is greater then the specified score for tag in block list 
+                                        if scores[score] >= feral_block_list[feral]:
+                                            print("[ * * * FERAL_BLOCK_LIST * * * ]")
+                                            issue += 1
+                                            issues += "FERAL-> " + str(round((scores[score]*100))) + "% **" + score + "**  "            
+
                 else:
                     print("https request error")
             else:
@@ -369,7 +480,7 @@ async def on_message(message: discord.Message):
 
 
     if issue > 0:
-        print("][ * * * TAG_BLOCK_LIST  * * * ][")
+        print("][ * * * BLOCK_LIST  * * * ][")
         await bot.get_channel(int(botPostChannel)).send(f"{message.author.mention} posted {message.jump_url}, image(s) {issues}")
         #await message.reply(f"<@{message.author.id}> your message was deleted; because AI thinks there was a chance that one, or more images in the post contained something against the rules. {issues}")
         #await message.delete()
