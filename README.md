@@ -43,6 +43,8 @@ dotenv set STRAIGHT_BLOCK_LIST {'tag1':.02,'tag2':.3}
 
 dotenv set FERAL_BLOCK_LIST {'tag1':.02,'tag2':.3}
 
+dotenv set HUMAN_BLOCK_LIST {'tag1':.02,'tag2':.3}
+
 dotenv set SPOILER_BLOCK_LIST {'tag1':.02,'tag2':.3}
 
 
