@@ -115,6 +115,14 @@ print("human_block_list is:")
 for human in human_block_list:
     print(f'Tag to block {human}: {human_block_list[human]}')
 
+#tags to only block in straight channels
+spoiler_block_list = ast.literal_eval(os.environ["SPOILER_BLOCK_LIST"])
+
+print("spoiler_block_list is:")
+for spoiler in spoiler_block_list:
+    print(f'Tag to block {spoiler}: {spoiler_block_list[spoiler]}')
+
+
 #details
 description = '''A discord bot, to run posted images through autotagger for moderation. 
 
@@ -402,6 +410,8 @@ async def on_message(message: discord.Message):
     #attachments
     for attachment in message.attachments:
         if any(attachment.filename.lower().endswith(image) for image in image_types):
+            print(message)
+            print(attachment)
             #print(message.author)
             #print(bot.user.id)
             #test = asyncio.test2()
@@ -512,7 +522,24 @@ async def on_message(message: discord.Message):
                                             #possibly check for disembodied_hand?
                                             print("[ * * * HUMAN_BLOCK_LIST * * * ]")
                                             issue += 1
-                                            issues += "HUMAN-> " + str(round((scores[score]*100))) + "% **" + score + "**  "           
+                                            issues += "HUMAN-> " + str(round((scores[score]*100))) + "% **" + score + "**  "
+
+                            for spoiler in spoiler_block_list:
+                                if score == spoiler:
+                                    if attachment.filename.startswith("SPOILER_") == False:
+                                        print("not spoiler")
+                                        if spoiler not in str(message.channel):
+                                            print("matched")
+                                            #if tag's score is greater then the specified score for tag in block list 
+                                            if scores[score] >= spoiler_block_list[spoiler]:
+                                                #possibly check for disembodied_hand?
+                                                print("[ * * * SPOILER_BLOCK_LIST * * * ]")
+                                                issue += 1
+                                                issues += "SPOILER-> " + str(round((scores[score]*100))) + "% **" + score + "**  "
+                                        else:
+                                            print("channel name bypass")
+                                    else:
+                                        print("image is marked spoiler")
 
                 else:
                     print("https request error")
