@@ -2,6 +2,7 @@
 JTP-Discord-Mod-Bot
 
 
+
 #Get token
 [https://discord.com/developers/docs/intro](https://discord.com/developers/applications)
 
@@ -12,6 +13,7 @@ bot tab > reset token (copy save token for set)
 turn on Server Members Intent
 
 turn on Message Content Intent
+
 
 
 
@@ -46,6 +48,7 @@ dotenv set FERAL_BLOCK_LIST {'tag1':.02,'tag2':.3}
 dotenv set HUMAN_BLOCK_LIST {'tag1':.02,'tag2':.3}
 
 dotenv set SPOILER_BLOCK_LIST {'tag1':.02,'tag2':.3}
+
 
 
 
