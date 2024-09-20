@@ -8,7 +8,7 @@ JTP-Discord-Mod-Bot
 4. turn on Server Members Intent
 5. turn on Message Content Intent
 
-### setup
+### Setup
 ```sh
 python -m venv .venv
 .\.venv\Scripts\activate
@@ -26,7 +26,7 @@ dotenv set HUMAN_BLOCK_LIST {'tag1':.02,'tag2':.3}
 dotenv set SPOILER_BLOCK_LIST {'tag1':.02,'tag2':.3}
 ```
 
-### run
+### Run
 ```sh
 .\.venv\Scripts\activate
 python .\JTP_bot.py
