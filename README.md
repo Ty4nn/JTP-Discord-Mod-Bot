@@ -3,16 +3,17 @@ JTP-Discord-Mod-Bot
 
 
 
-###
-Get token [https://discord.com/developers/docs/intro](https://discord.com/developers/applications)
+### Get BOT token 
 
-new application
+1. [https://discord.com/developers/docs/intro](https://discord.com/developers/applications)
 
-bot tab > reset token (copy save token for set)
+2. new application
 
-turn on Server Members Intent
+3. bot tab > reset token (copy save token for set)
 
-turn on Message Content Intent
+4. turn on Server Members Intent
+
+5. turn on Message Content Intent
 
 
 
