@@ -7,3 +7,4 @@ torch
 torchvision
 python-dotenv
 huggingface_hub
+asyncio
