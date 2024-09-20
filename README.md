@@ -3,8 +3,8 @@ JTP-Discord-Mod-Bot
 
 
 
-#Get token
-[https://discord.com/developers/docs/intro](https://discord.com/developers/applications)
+###
+Get token [https://discord.com/developers/docs/intro](https://discord.com/developers/applications)
 
 new application
 
@@ -19,7 +19,7 @@ turn on Message Content Intent
 
 
 
-#setup
+### setup
 
 python -m venv .venv
 
@@ -52,7 +52,7 @@ dotenv set SPOILER_BLOCK_LIST {'tag1':.02,'tag2':.3}
 
 
 
-#run
+### run
 
 .\.venv\Scripts\activate
 
