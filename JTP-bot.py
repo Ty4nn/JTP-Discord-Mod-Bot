@@ -38,6 +38,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
+#asyncio
+import asyncio
+
 #global settings
 
 #autotagger
@@ -105,7 +108,12 @@ print("feral_block_list is:")
 for feral in feral_block_list:
     print(f'Tag to block {feral}: {feral_block_list[feral]}')
 
+#tags to only block in straight channels
+human_block_list = ast.literal_eval(os.environ["HUMAN_BLOCK_LIST"])
 
+print("human_block_list is:")
+for human in human_block_list:
+    print(f'Tag to block {human}: {human_block_list[human]}')
 
 #details
 description = '''A discord bot, to run posted images through autotagger for moderation. 
@@ -311,6 +319,7 @@ allowed_tags = list(tags.keys())
 
 sorted_tag_score = {}
 
+#async 
 def run_classifier(image, threshold):
     global sorted_tag_score
     img = image.convert('RGBA')
@@ -331,6 +340,7 @@ def run_classifier(image, threshold):
     sorted_tag_score = dict(sorted(tag_score.items(), key=lambda item: item[1], reverse=True))
 
     return create_tags(threshold)
+    #await create_tags(threshold)
 
 def create_tags(threshold):
     global sorted_tag_score
@@ -339,25 +349,37 @@ def create_tags(threshold):
     return text_no_impl, filtered_tag_score
 
 
-#Download Model
 
+#funtions funtions
+#async def test2():
+    #task = "test"
+    #return task
+
+#async with asyncio.test2() as tg:
+    #print(tg)
 
 
 #discord bot code
-
-#prossess messages
-#ignore bot's own messages
-#ignore DM messages
 #prosses messages for attachments.
 image_types = ["png", "jpeg", "gif", "jpg", "webp"] #image formats supported by discord not mov, mpeg, apng, 
 @bot.event
 async def on_message(message: discord.Message):
+
+
     # this is the sender of the Message
     #print(bot.user.id)
     #print(message.author)
     #print(message.author.id)
+    #print(message)
+    print(message.author.guild.id)
+    #print(message.channel.nsfw)
+    #print(message.author.bot)
 
-    #ingore messages posted by bot to avoid infinite loop
+    #ingore posts by bots
+    if message.author.bot:
+        return
+
+    #ingore messages posted by bots to avoid infinite loop
     if message.author.id == bot.user.id:
         return
 
@@ -365,14 +387,24 @@ async def on_message(message: discord.Message):
     if isinstance(message.channel, discord.DMChannel):
         return
 
+    #ingore messages posted in another discord
+    #if message.author.guild.id == #should inviromental var here#:
+        #return
+
+    #not needed sense bot messages are ignored 
+    #ingore starboards (because reposting)
+    #if "starboard" in str(message.channel):
+        #return
+
     issue = 0
     issues = ""
 
     #attachments
     for attachment in message.attachments:
         if any(attachment.filename.lower().endswith(image) for image in image_types):
-            print(message.author)
-            print(bot.user.id)
+            #print(message.author)
+            #print(bot.user.id)
+            #test = asyncio.test2()
 
             print(f"[{message.guild}] | [{message.channel}] | [{message.author}] @ {message.created_at}: {message.content}")
 
@@ -412,10 +444,8 @@ async def on_message(message: discord.Message):
                                         issue += 1
                                         issues += "tags-> " + str(round((scores[score]*100))) + "% **" + score + "**  "
 
-                            if "sfw" in str(message.channel) and "nsfw" not in str(message.channel):
-                                #if ( message.channel.lower.find("sfw") ):
-                                #if "sfw" in str(message.channel):
-                                #if ( str(message.channel).find("sfw") != -1 ):
+                            #if "sfw" in str(message.channel) and "nsfw" not in str(message.channel):
+                            if( message.channel.nsfw == False):
                                 for sfw in sfw_block_list:
                                     if score == sfw:
                                         #if tag's score is greater then the specified score for tag in block list 
@@ -471,7 +501,18 @@ async def on_message(message: discord.Message):
                                         if scores[score] >= feral_block_list[feral]:
                                             print("[ * * * FERAL_BLOCK_LIST * * * ]")
                                             issue += 1
-                                            issues += "FERAL-> " + str(round((scores[score]*100))) + "% **" + score + "**  "            
+                                            issues += "FERAL-> " + str(round((scores[score]*100))) + "% **" + score + "**  "
+
+                            if "human" not in str(message.channel):
+                                for human in human_block_list:
+                                    if score == human:
+                                        print("matched")
+                                        #if tag's score is greater then the specified score for tag in block list 
+                                        if scores[score] >= human_block_list[human]:
+                                            #possibly check for disembodied_hand?
+                                            print("[ * * * HUMAN_BLOCK_LIST * * * ]")
+                                            issue += 1
+                                            issues += "HUMAN-> " + str(round((scores[score]*100))) + "% **" + score + "**  "           
 
                 else:
                     print("https request error")
