@@ -483,7 +483,7 @@ async def on_message(message: discord.Message):
                                             issue += 1
                                             issues += "FEMALE-> " + str(round((scores[score]*100))) + "% **" + score + "**  "
 
-                            if "male" in str(message.channel):
+                            if "male" in str(message.channel) and "female" not in str(message.channel):
                                 for male in male_block_list:
                                     if score == male:
                                         print("matched")
@@ -495,15 +495,14 @@ async def on_message(message: discord.Message):
 
                             if "straight" in str(message.channel):
                                 for straight in straight_block_list:
-                                    if score == straight_block_list:
-                                        print("matched")
+                                    if score == straight:
                                         #if tag's score is greater then the specified score for tag in block list 
                                         if scores[score] >= straight_block_list[straight]:
                                             print("[ * * * STRAIGHT_BLOCK_LIST * * * ]")
                                             issue += 1
                                             issues += "STRAIGHT-> " + str(round((scores[score]*100))) + "% **" + score + "**  "
 
-                            if "feral" not in str(message.channel):
+                            if "feral" not in str(message.channel) and "feral-sp" not in str(message.channel):
                                 for feral in feral_block_list:
                                     if score == feral:
                                         print("matched")
@@ -512,11 +511,25 @@ async def on_message(message: discord.Message):
                                             print("[ * * * FERAL_BLOCK_LIST * * * ]")
                                             issue += 1
                                             issues += "FERAL-> " + str(round((scores[score]*100))) + "% **" + score + "**  "
+                            elif "feral-sp" in str(message.channel):
+                                for feral in feral_block_list:
+                                    if score == feral:
+                                        print("matched")
+                                        #if tag's score is greater then the specified score for tag in block list 
+                                        if scores[score] >= feral_block_list[feral]:
+                                            print("ERAL_BLOCK_LIST - spoiler?")
+                                            if attachment.filename.startswith("SPOILER_") == False:
+                                                print("[ * * * FERAL_BLOCK_LIST (spoiler) * * * ]")
+                                                issue += 1
+                                                issues += "FERAL(spoiler)-> " + str(round((scores[score]*100))) + "% **" + score + "**  "
+                                            else:
+                                                print("[ * * * (spoiler enabled) * * * ]")
+
 
                             if "human" not in str(message.channel):
                                 for human in human_block_list:
                                     if score == human:
-                                        print("matched")
+                                        print("matched human")
                                         #if tag's score is greater then the specified score for tag in block list 
                                         if scores[score] >= human_block_list[human]:
                                             #possibly check for disembodied_hand?
@@ -526,6 +539,7 @@ async def on_message(message: discord.Message):
 
                             for spoiler in spoiler_block_list:
                                 if score == spoiler:
+                                    print("matched spoiler")
                                     if attachment.filename.startswith("SPOILER_") == False:
                                         print("not spoiler")
                                         if spoiler not in str(message.channel):
@@ -550,7 +564,7 @@ async def on_message(message: discord.Message):
     if issue > 0:
         print("][ * * * BLOCK_LIST(s)  * * * ][")
         await bot.get_channel(int(botPostChannel)).send(f"{message.author.mention} posted {message.jump_url}, image(s) {issues}")
-        #await message.reply(f"<@{message.author.id}> your message was deleted; because AI thinks there was a chance that one, or more images in the post contained something against the rules. {issues}")
+        await message.reply(f"<@{message.author.id}> your message was deleted; because AI thinks there was a chance that one, or more images in the post contained something against the rules. {issues}")
         #await message.delete()
 	
     await bot.process_commands(message)
